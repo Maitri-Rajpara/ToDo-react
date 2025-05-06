@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FilterFormInputs } from "./FilterBar";
-import { useTasks } from "../Context/useTask";
+import { useTasks } from "../Hooks/useTask";
 import FilterBar from "./FilterBar";
 import { Task } from "../Context/TaskContext";
 
@@ -56,46 +56,53 @@ export default function TaskList() {
     });
   }, [filters, tasks]);
 
-  return tasks.length === 0 ? (
-    <p className="no-tasks">No tasks here.</p>
-  ) : (
+  return (
     <>
-      <FilterBar register={register} />
-      <ul className="task-list">
-        {filteredTasks.map((task) => (
-          <li
-            key={task.id}
-            className={`task-card ${task.status.toLowerCase()}`}
-          >
-            <h3>{task.title}</h3>
-            <p>{task.desc}</p>
-            <p>Status: {task.status}</p>
-            <div className="list-btn">
-              <button
-                onClick={() => deleteTask(task.id)}
-                className="task-btn delete"
-              >
-                Delete
-              </button>
-              <button
-                onClick={() => navigate("/add", { state: { editId: task.id } })}
-                className="task-btn edit"
-              >
-                Edit
-              </button>
-              <select
-                value={task.status}
-                onChange={(e) => updateStatus(task.id, e.target.value)}
-                className="status-select"
-              >
-                <option value="todo">To-Do</option>
-                <option value="InProgress">In Progress</option>
-                <option value="Completed">Completed</option>
-              </select>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {tasks.length > 0 && <FilterBar register={register} />}
+
+      {tasks.length === 0 ? (
+        <p className="no-tasks">No tasks available.</p>
+      ) : filteredTasks.length === 0 ? (
+        <p className="no-tasks">No tasks matches criteria.</p>
+      ) : (
+        <ul className="task-list">
+          {filteredTasks.map((task) => (
+            <li
+              key={task.id}
+              className={`task-card ${task.status.toLowerCase()}`}
+            >
+              <h3>{task.title}</h3>
+              <p>{task.desc}</p>
+              <p>Status: {task.status}</p>
+              <div className="list-btn">
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="task-btn delete"
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() =>
+                    navigate("/add", { state: { editId: task.id } })
+                  }
+                  className="task-btn edit"
+                >
+                  Edit
+                </button>
+                <select
+                  value={task.status}
+                  onChange={(e) => updateStatus(task.id, e.target.value)}
+                  className="status-select"
+                >
+                  <option value="todo">To-Do</option>
+                  <option value="InProgress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
