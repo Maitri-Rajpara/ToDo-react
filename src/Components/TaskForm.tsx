@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Task } from "../Context/TaskContext";
 import { useTasks } from "../Hooks/useTask";
-import "./taskform.css";
+import "../Styles/taskform.css";
 
 type FormValues = {
   title: string;
@@ -42,7 +42,7 @@ export default function TaskForm() {
         desc: taskToEdit.desc,
       });
     }
-  }, [isEdit, taskToEdit, reset]);
+  }, [isEdit, taskToEdit]);
 
   const onSubmit = (data: FormValues) => {
     if (isEdit && taskToEdit) {
