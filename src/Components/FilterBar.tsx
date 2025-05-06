@@ -1,12 +1,10 @@
 import { UseFormRegister } from "react-hook-form";
-
-type FilterFormInputs = {
-  searchTitle: string;
-  searchDesc: string;
-  searchAll: string;
-  status: string;
-};
-
+export interface FilterFormInputs {
+  searchTitle?: string;
+  searchDesc?: string;
+  searchAll?: string;
+  status?: string;
+}
 interface FilterBarProps {
   register: UseFormRegister<FilterFormInputs>;
 }

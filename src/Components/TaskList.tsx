@@ -1,19 +1,13 @@
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
-import { TaskContext } from "../Context/TaskContext";
+import { FilterFormInputs } from "./FilterBar";
+import { useTasks } from "../Context/useTask";
 import FilterBar from "./FilterBar";
-
-type FilterFormInputs = {
-  searchTitle: string;
-  searchDesc: string;
-  searchAll: string;
-  status: string;
-};
+import { Task } from "../Context/TaskContext";
 
 export default function TaskList() {
-  const { tasks, setTasks } = useContext(TaskContext)!;
+  const { tasks, setTasks } = useTasks();
   const navigate = useNavigate();
 
   const { register, watch } = useForm<FilterFormInputs>({
@@ -27,15 +21,17 @@ export default function TaskList() {
 
   const filters = watch();
 
-  const deleteTask = (index: number) => {
-    setTasks(tasks.filter((_, i) => i !== index));
+  const deleteTask = (id: string) => {
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  const updateStatus = (index: number, newStatus: string) => {
+  const updateStatus = (id: string, newStatus: string) => {
     setTasks(
-      tasks.map((task, i) =>
-        i === index ? { ...task, status: newStatus as any } : task
-      )
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, status: newStatus as Task["status"] }
+          : task,
+      ),
     );
   };
 
@@ -66,29 +62,30 @@ export default function TaskList() {
     <>
       <FilterBar register={register} />
       <ul className="task-list">
-        {filteredTasks.map((task, index) => (
-          <li key={index} className={`task-card ${task.status.toLowerCase()}`}>
+        {filteredTasks.map((task) => (
+          <li
+            key={task.id}
+            className={`task-card ${task.status.toLowerCase()}`}
+          >
             <h3>{task.title}</h3>
             <p>{task.desc}</p>
             <p>Status: {task.status}</p>
             <div className="list-btn">
               <button
-                onClick={() => deleteTask(index)}
+                onClick={() => deleteTask(task.id)}
                 className="task-btn delete"
               >
                 Delete
               </button>
               <button
-                onClick={() =>
-                  navigate("/add", { state: { editIndex: index } })
-                }
+                onClick={() => navigate("/add", { state: { editId: task.id } })}
                 className="task-btn edit"
               >
                 Edit
               </button>
               <select
                 value={task.status}
-                onChange={(e) => updateStatus(index, e.target.value)}
+                onChange={(e) => updateStatus(task.id, e.target.value)}
                 className="status-select"
               >
                 <option value="todo">To-Do</option>

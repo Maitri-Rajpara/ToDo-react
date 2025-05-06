@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
 export interface Task {
+  id: any;
   title: string;
   desc: string;
   status: "todo" | "InProgress" | "Completed";
@@ -11,7 +12,9 @@ interface TaskContextProps {
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-export const TaskContext = createContext<TaskContextProps | undefined>(undefined);
+export const TaskContext = createContext<TaskContextProps | undefined>(
+  undefined,
+);
 
 export function TaskProvider(props: any) {
   const [tasks, setTasks] = useState<Task[]>(() => {

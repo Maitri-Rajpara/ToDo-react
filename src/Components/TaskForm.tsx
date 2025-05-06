@@ -1,7 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
-import { TaskContext, Task } from "../Context/TaskContext";
+import { Task } from "../Context/TaskContext";
+import { useTasks } from "../Context/useTask";
 import "./taskform.css";
 
 type FormValues = {
@@ -9,43 +12,49 @@ type FormValues = {
   desc: string;
 };
 
+const schema = yup.object().shape({
+  title: yup.string().required("Title is required").min(3, "Title must be at least 3 characters"),
+  desc: yup.string().required("Description is required").min(5, "Description must be at least 5 characters"),
+});
+
 export default function TaskForm() {
-  const { tasks, setTasks } = useContext(TaskContext)!;
+  const { tasks, setTasks } = useTasks();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const editIndex = location.state?.editIndex;
-  const isEdit = editIndex !== undefined;
+  const editId = location.state?.editId;
+  const isEdit = Boolean(editId);
+  const taskToEdit = tasks.find((task) => task.id === editId);
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
-    if (isEdit) {
-      const task = tasks[editIndex];
-      if (task) {
-        reset({
-          title: task.title,
-          desc: task.desc,
-        });
-      }
+    if (isEdit && taskToEdit) {
+      reset({
+        title: taskToEdit.title,
+        desc: taskToEdit.desc,
+      });
     }
-  }, [isEdit, editIndex, tasks, reset]);
+  }, [isEdit, taskToEdit, reset]);
 
   const onSubmit = (data: FormValues) => {
-    if (isEdit) {
-      const updatedTasks = tasks.map((task, i) =>
-        i === editIndex
+    if (isEdit && taskToEdit) {
+      const updatedTasks = tasks.map((task) =>
+        task.id === editId
           ? { ...task, title: data.title, desc: data.desc }
           : task,
       );
       setTasks(updatedTasks);
     } else {
       const newTask: Task = {
+        id: crypto.randomUUID(),
         title: data.title,
         desc: data.desc,
         status: "todo",
@@ -63,7 +72,7 @@ export default function TaskForm() {
           type="text"
           placeholder="Title"
           className="task-input"
-          {...register("title", { required: "Title is required" })}
+          {...register("title")}
         />
         {errors.title && <p className="error">{errors.title.message}</p>}
 
@@ -71,7 +80,7 @@ export default function TaskForm() {
           type="text"
           placeholder="Description"
           className="task-input"
-          {...register("desc", { required: "Description is required" })}
+          {...register("desc")}
         />
         {errors.desc && <p className="error">{errors.desc.message}</p>}
 
