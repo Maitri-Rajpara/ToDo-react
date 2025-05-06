@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Task } from "../Context/TaskContext";
 import { useTasks } from "../Hooks/useTask";
-import "../Styles/taskform.css";
+import "./taskform.css";
 
 type FormValues = {
   title: string;
@@ -13,8 +13,14 @@ type FormValues = {
 };
 
 const schema = yup.object().shape({
-  title: yup.string().required("Title is required").min(3, "Title must be at least 3 characters"),
-  desc: yup.string().required("Description is required").min(5, "Description must be at least 5 characters"),
+  title: yup
+    .string()
+    .required("Title is required")
+    .min(3, "Title must be at least 3 characters"),
+  desc: yup
+    .string()
+    .required("Description is required")
+    .min(5, "Description must be at least 5 characters"),
 });
 
 export default function TaskForm() {
