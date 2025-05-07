@@ -23,11 +23,10 @@ const schema = yup.object().shape({
     .min(5, "Description must be at least 5 characters"),
 });
 
-export default function TaskForm() {
+const TaskForm: ()  => React.ReactNode = () => {
   const { tasks, setTasks } = useTasks();
   const navigate = useNavigate();
   const location = useLocation();
-
   const editId = location.state?.editId as string | undefined;
   const taskToEdit = tasks.find((task) => task.id === editId);
 
@@ -47,7 +46,7 @@ export default function TaskForm() {
         desc: taskToEdit.desc,
       });
     }
-  }, [editId, taskToEdit]);
+  }, [editId, taskToEdit, reset]);
 
   const onSubmit = (data: FormValues) => {
     if (editId && taskToEdit) {
@@ -98,3 +97,5 @@ export default function TaskForm() {
     </>
   );
 }
+
+export default TaskForm
