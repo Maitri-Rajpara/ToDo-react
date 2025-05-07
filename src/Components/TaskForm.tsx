@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React ,{ useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -28,8 +28,7 @@ export default function TaskForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const editId = location.state?.editId;
-  const isEdit = Boolean(editId);
+  const editId = location.state?.editId as string | undefined;
   const taskToEdit = tasks.find((task) => task.id === editId);
 
   const {
@@ -42,16 +41,16 @@ export default function TaskForm() {
   });
 
   useEffect(() => {
-    if (isEdit && taskToEdit) {
+    if (editId && taskToEdit) {
       reset({
         title: taskToEdit.title,
         desc: taskToEdit.desc,
       });
     }
-  }, [isEdit, taskToEdit]);
+  }, [editId, taskToEdit, reset]);
 
   const onSubmit = (data: FormValues) => {
-    if (isEdit && taskToEdit) {
+    if (editId && taskToEdit) {
       const updatedTasks = tasks.map((task) =>
         task.id === editId
           ? { ...task, title: data.title, desc: data.desc }
@@ -71,8 +70,9 @@ export default function TaskForm() {
   };
 
   return (
+    <>
     <div className="task-form">
-      <h2>{isEdit ? "Edit Task" : "Add Task"}</h2>
+      <h2>{editId ? "Edit Task" : "Add Task"}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
@@ -91,9 +91,10 @@ export default function TaskForm() {
         {errors.desc && <p className="error">{errors.desc.message}</p>}
 
         <button type="submit" className="add-btn-e">
-          {isEdit ? "Save" : "Add"}
+          {editId ? "Save" : "Add"}
         </button>
       </form>
     </div>
+    </>
   );
 }
