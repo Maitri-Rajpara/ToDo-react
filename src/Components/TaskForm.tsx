@@ -47,7 +47,7 @@ export default function TaskForm() {
         desc: taskToEdit.desc,
       });
     }
-  }, [editId, taskToEdit, reset]);
+  }, [editId, taskToEdit]);
 
   const onSubmit = (data: FormValues) => {
     if (editId && taskToEdit) {
