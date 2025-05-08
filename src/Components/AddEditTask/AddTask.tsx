@@ -1,5 +1,4 @@
-import React from "react";
-import TaskForm from "../Components/AddEditTask/TaskForm";
+import TaskForm from "../AddEditTask/TaskForm";
 
 export default function AddTask() {
   return (

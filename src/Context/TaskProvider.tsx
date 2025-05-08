@@ -1,21 +1,16 @@
-import React ,{ createContext, useState, useEffect } from "react";
-
-export interface Task {
-  id: string;
-  title: string;
-  desc: string;
-  status: TaskStatus;
-}
-
-export enum TaskStatus {
-  Todo = "todo",
-  InProgress = "InProgress",
-  Completed = "Completed",
-}
-
+import { createContext, useState, useEffect , useContext } from "react";
+import { Task } from "../Components/Types/type";
 interface TaskContextProps {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+}
+
+export function useTasks() {
+  const context = useContext(TaskContext);
+  if (!context) {
+    throw new Error("useTasks must be used within a TaskProvider");
+  }
+  return context;
 }
 
 export const TaskContext = createContext<TaskContextProps | undefined>(

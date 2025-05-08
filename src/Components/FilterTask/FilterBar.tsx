@@ -1,4 +1,4 @@
-import React , { UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 
 export interface FilterFormInputs {
   searchTitle?: string;
@@ -11,7 +11,6 @@ interface FilterBarProps {
 }
 
 export default function FilterBar({ register }: FilterBarProps) {
-  console.log(React)
   return (
     <div className="filter-section">
       <input

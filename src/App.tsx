@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
-import AddTask from "./Pages/AddTask";
-import { TaskProvider } from "./Context/TaskContext";
-import './Styles/App.css'
+import Home from "./Components/TaskList/TaskListPage";
+import AddTask from "./Components/AddEditTask/AddTask";
+import { TaskProvider } from "./Context/TaskProvider";
+import './App.css'
 
 export default function App() {
   return (

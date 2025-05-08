@@ -1,5 +1,4 @@
-import TaskList from "../Components/TaskList/TaskList";
-import React from "react";
+import TaskList from "./TaskList";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {

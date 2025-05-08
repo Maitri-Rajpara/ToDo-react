@@ -1,15 +1,14 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FilterFormInputs } from "../FilterTask/FilterBar";
-import { useTasks } from "../../Context/useTask";
+import { useTasks } from "../../Context/TaskProvider";
 import FilterBar from "../FilterTask/FilterBar";
-import { Task, TaskStatus } from "../../Context/TaskContext";
+import { Task, TaskStatus } from "../Types/type";
 
 export default function TaskList() {
   const { tasks, setTasks } = useTasks();
   const navigate = useNavigate();
-  console.log(React);
   const { register, watch } = useForm<FilterFormInputs>({
     defaultValues: {
       searchTitle: "",

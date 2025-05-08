@@ -1,16 +1,11 @@
-import React ,{ useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Task, TaskStatus } from "../../Context/TaskContext";
-import { useTasks } from "../../Context/useTask";
-import "../Styles/taskform.css";
-
-type FormValues = {
-  title: string;
-  desc: string;
-};
+import { Task, TaskStatus , FormValues } from "../Types/type";
+import { useTasks } from "../../Context/TaskProvider";
+import "./taskform.css";
 
 const schema = yup.object().shape({
   title: yup
