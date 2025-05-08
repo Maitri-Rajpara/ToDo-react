@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Task, TaskStatus , FormValues } from "../Types/type";
-import { useTasks } from "../../Context/TaskProvider";
+import { useTasks } from "../Context/TaskProvider";
 import "./taskform.css";
 
 const schema = yup.object().shape({

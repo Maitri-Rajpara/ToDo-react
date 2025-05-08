@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FilterFormInputs } from "../FilterTask/FilterBar";
-import { useTasks } from "../../Context/TaskProvider";
+import { useTasks } from "../Context/TaskProvider";
 import FilterBar from "../FilterTask/FilterBar";
 import { Task, TaskStatus } from "../Types/type";
 
